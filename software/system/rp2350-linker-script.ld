@@ -47,6 +47,7 @@ SECTIONS
         . = ALIGN(4);
     }
 
+    _sidata = LOADADDR(.data);
     .data :
     {
         _sdata = .;
