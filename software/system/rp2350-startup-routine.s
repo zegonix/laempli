@@ -29,13 +29,27 @@
 .weak    Reset_Handler
 .type    Reset_Handler, %function
 Reset_Handler:
+    // initialise data section
+    LDR R0, _sidata
+    LDR R1, _sdata
+    LDR R2, _edata
+    SUBS R3, R2, R1
+    LDR R4, #0
+    B Copy_Init_Data
+
+Copy_Init_Data:
+    LDR R5, [R0, R4]
+    STR R5, [R1, R4]
+    ADDS R4, R4, #4
+    CMP R3, R4 // TODO: fix instruction (continue here)
+
 
 Enable_FPU:
-    CPACR   EQU  0xE000ED88
-    LDR     R0,  =CPACR
-    LDR     r1, [R0]
-    ORR     R1, R1, #(0xF << 20)
-    STR     R1, [R0]
+    CPACR EQU 0xE000ED88
+    LDR R0, =CPACR
+    LDR R1, [R0]
+    ORR R1, R1, #(0xF << 20)
+    STR R1, [R0]
     DSB
     ISB
 
